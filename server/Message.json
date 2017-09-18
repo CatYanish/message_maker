@@ -1,12 +1,14 @@
 [
   {
+    "type": "standard",
     "greeting": "Welcome",
     "ready": "is now ready for you",
-    "enjoy": "We hope you enjoy your stay! Please let us know if there's any way we can help make your stay more pleasant."
+    "enjoy": "We hope you enjoy your stay! Please let us know if there's any way we can help make your visit more pleasant."
   },
   {
+    "type": "formal",
     "greeting": "Thank you for choosing ",
     "ready": "is ready for your arrival",
-    "enjoy": "We will do everything possible to make your stay an enjoyable and relaxing experience. Please let any of our staff know how we can help you have a great stay."
+    "enjoy": "We will do everything possible to make your stay an enjoyable and relaxing experience. Please let any of our staff know how we can help you have a pleasant stay in "
   }
 ]

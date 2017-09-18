@@ -14,7 +14,7 @@ app.use(bodyParser.json()); // needed for angular requests
 
 
 /** ---------- EXPRESS ROUTES ---------- **/
-app.use('/message', message);
+app.use('/guest', guestMessage);
 app.use('/', index);
 
 

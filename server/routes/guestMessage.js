@@ -14,26 +14,34 @@ var firstName;
 var lastName;
 var roomNumber;
 var message;
-
-readFile();
-
-function generateMessage() {
-  var message = timeOfDayGreeting + " " + firstName + " " + lastName  + "! Room " +
-      roomNumber + " " + template[0].ready + ". " +  template[0].enjoy;
-  console.log(message);
-}
+var offet;
+// var templateType = "formal";
+var messageType;
 
 
 
-function readFile() {
-  // console.log('logging the contents of guest.json', guest);
-  // console.log('logging room number for first guest', guest[0].reservation.roomNumber);
+router.post('/', function(req, res) {
+  console.log('req.body is', req.body);
+  messageType = req.body.type;
+  for (var i = 0; i < company.length; i++) {
+    if (company[i].company == req.body.company) {
+      hotelName = company[i].company;
+      city = company[i].city;
+      console.log(hotelName);
+      console.log(city);
+      if (company[i].timezone == "US/Central") {
+        offset = 5;
+      } else if (company[i].timezone == "US/Eastern") {
+        offset = 4;
+      }  else if (company[i].timezone == "US/Pacific") {
+        offset = 7;
+      }
+    }
+  }
 
-
+  console.log("messageType", req.body.type);
   for (var i = 0; i < guest.length; i++) {
-
-
-    if(guest[i].lastName == "Herrera" && guest[i].firstName == "Latoya") {
+    if(guest[i].lastName == req.body.lastName && guest[i].firstName == req.body.firstName) {
       lastName = guest[i].lastName;
       console.log('lastName', lastName);
       firstName = guest[i].firstName;
@@ -46,17 +54,18 @@ function readFile() {
       console.log('first format of a a date', pubDate);
       var hours = pubDate.getUTCHours();
       console.log("utc hours", hours);
-
+      var localHours = hours - offset;
+      console.log("localHours", localHours);
       /* hour is before noon */
-      if ( hours < 12 )
+      if ( localHours < 12 )
       {
         timeOfDayGreeting = "Good morning";
       }
-      else if (hours >= 12 && hours <= 17 )
+      else if (localHours >= 12 && localHours <= 17 )
       {
         timeOfDayGreeting = "Good afternoon";
       }
-      else if (hours > 17 && hours <= 24 )
+      else if (localHours > 17 && localHours <= 24 )
       {
         timeOfDayGreeting = "Good evening";
       }
@@ -65,25 +74,36 @@ function readFile() {
         timeOfDayGreeting = "Hello";
         console.log("time wasn't found!");
       }
-
     } //end of if statement
-
   }//end of for loop
 
-  for (var i = 0; i < company.length; i++) {
-    if (company[i].company == "The Grand Budapest Hotel") {
-        hotelName = company[i].company;
-        city = company[i].city;
-        console.log(hotelName);
-        console.log(city);
+  generateMessage();
+  res.sendStatus(201);
+}); //end of post route
+
+
+
+function generateMessage() {
+  console.log("generate message called");
+  if (messageType == "Formal") {
+    for (var i = 0; i < template.length; i++) {
+      if (template[i].type == "formal") {
+        var message = timeOfDayGreeting + " " + firstName + " " + lastName  + "! Room " +
+        roomNumber + " " + template[i].ready + ". " +  template[i].enjoy + city + ".";
+        console.log(message);
+      } // end of if
+    } //end of for loop
+  }
+  else if (messageType == "Standard") {
+    for (var i = 0; i < template.length; i++) {
+      if (template[i].type == "standard") {
+        var message = timeOfDayGreeting + " " + firstName + " " + lastName  + "! Room " +
+        roomNumber + " " + template[i].ready + ". " +  template[i].enjoy;
+        console.log(message);
+      }
     }
   }
-
- generateMessage();
-
-} //end of readfile
-
-
+}
 
 
 

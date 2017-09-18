@@ -3,25 +3,29 @@ myApp.controller('MessageController', ['$http', function($http) {
 
   console.log('ang sourced');
 
-  mc.getMessage = function() {
-    $http.get('/message').then(function(response) {
-      console.log(response.data);
-      mc.messages = response.data;
-    })
-  }// end get listings
-
-
-  mc.getMessage();
+  // mc.getMessage = function() {
+  //   $http.get('/message').then(function(response) {
+  //     console.log(response.data);
+  //     mc.messages = response.data;
+  //   })
+  // }// end get listings
+  //
+  //
+  // mc.getMessage();
 
 //this object stores new info to be posted on messages
-  mc.newMessage = {};
+  mc.message = {
+    firstName: "",
+    lastName: "",
+    company: "",
+    type: ""
+  };
 
-  mc.addMessage = function() {
-    console.log('add message', mc.newMessage);
-    $http.post('/message', mc.newMessage)
-    .then(function(response) {
-      console.log('added listing', response);
-      mc.getMessage();
+  mc.sendMessage = function() {
+    console.log('send message', mc.message);
+    $http.post('/guest', mc.message).then(function(response) {
+      console.log('created message', response);
+      // mc.getMessage();
     });
   }// end post
 
