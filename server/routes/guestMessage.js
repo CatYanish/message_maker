@@ -4,31 +4,31 @@ var guest = require("../Guests.json");
 var company = require("../Companies.json");
 var template = require("../Message.json");
 
-
+// ----These Variables relate to converting time stamp into local time
 var timeOfDayGreeting;
 var timestamp;
 var pubDate;
+var offet;
+
+// These variables are used to contruct final customized message
 var hotelName;
 var city;
 var firstName;
 var lastName;
 var roomNumber;
 var message;
-var offet;
-// var templateType = "formal";
 var messageType;
 
 
 
 router.post('/', function(req, res) {
-  console.log('req.body is', req.body);
-  messageType = req.body.type;
+  messageType = req.body.type; // user can select different message styles (formal or standard)
+  //this for loop takes hotel name and sets hotel name and city variables, used in message template
+  // the if statement sets offset variable, in order to convert between UTC and local time
   for (var i = 0; i < company.length; i++) {
     if (company[i].company == req.body.company) {
       hotelName = company[i].company;
       city = company[i].city;
-      console.log(hotelName);
-      console.log(city);
       if (company[i].timezone == "US/Central") {
         offset = 5;
       } else if (company[i].timezone == "US/Eastern") {
@@ -39,24 +39,18 @@ router.post('/', function(req, res) {
     }
   }
 
-  console.log("messageType", req.body.type);
+//this for loop takes guest name and sets guest variables, used in final message
+//the time stamp is converted into UTC hours, and then converted into local time
   for (var i = 0; i < guest.length; i++) {
     if(guest[i].lastName == req.body.lastName && guest[i].firstName == req.body.firstName) {
       lastName = guest[i].lastName;
-      console.log('lastName', lastName);
       firstName = guest[i].firstName;
-      console.log(firstName);
       roomNumber = guest[i].reservation.roomNumber;
-      console.log(guest[i].reservation.roomNumber);
       timestamp = guest[i].reservation.startTimestamp;
-      console.log('timestamp', timestamp);
       pubDate = new Date(timestamp * 1000);
-      console.log('first format of a a date', pubDate);
       var hours = pubDate.getUTCHours();
-      console.log("utc hours", hours);
       var localHours = hours - offset;
-      console.log("localHours", localHours);
-      /* hour is before noon */
+    // the if/else statement sets the greeting to be appropriate for local time
       if ( localHours < 12 )
       {
         timeOfDayGreeting = "Good morning";
@@ -76,15 +70,16 @@ router.post('/', function(req, res) {
       }
     } //end of if statement
   }//end of for loop
-
+  // after setting variables and local time greeting,
+  //calls generate message to create custom message
   generateMessage();
   res.sendStatus(201);
 }); //end of post route
 
 
-
+// Generate message takes in variables and accesses json obects to contruct custom message
+//message is different depending on style specified by user
 function generateMessage() {
-  console.log("generate message called");
   if (messageType == "Formal") {
     for (var i = 0; i < template.length; i++) {
       if (template[i].type == "formal") {
