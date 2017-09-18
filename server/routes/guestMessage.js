@@ -19,15 +19,42 @@ var roomNumber;
 var message;
 var messageType;
 
+// this variable can contain a custom message created by user
+var customMessage;
 
-
+//calls functions to use and existing template and create a personalized message
 router.post('/', function(req, res) {
   messageType = req.body.type; // user can select different message styles (formal or standard)
-  //this for loop takes hotel name and sets hotel name and city variables, used in message template
-  // the if statement sets offset variable, in order to convert between UTC and local time
+  lastName = req.body.lastName;
+  firstName = req.body.firstName;
+  hotelName = req.body.company;
+  cityDetails();
+  guestDetails();
+  generateMessage();
+  res.sendStatus(201);
+}); //end of post route
+
+//calls functions to create a custom message created by the client for the guest
+//(example is hardcoded in client side message controller)
+router.post('/custom/', function(req, res) {
+  lastName = req.body.lastName;
+  firstName = req.body.firstName;
+  hotelName = req.body.company;
+  customMessage = req.body.body;
+  cityDetails();
+  guestDetails();
+  newMessage();
+  res.sendStatus(201);
+}); //end of post route
+
+
+
+
+//this for loop takes hotel name and sets hotel name and city variables, used in message template
+// the if statement sets offset variable, in order to convert between UTC and local time
+function cityDetails() {
   for (var i = 0; i < company.length; i++) {
-    if (company[i].company == req.body.company) {
-      hotelName = company[i].company;
+    if (company[i].company == hotelName) {
       city = company[i].city;
       if (company[i].timezone == "US/Central") {
         offset = 5;
@@ -37,20 +64,21 @@ router.post('/', function(req, res) {
         offset = 7;
       }
     }
-  }
+  } //end of for loop
+} //end of cityDetails function
+
 
 //this for loop takes guest name and sets guest variables, used in final message
 //the time stamp is converted into UTC hours, and then converted into local time
+function guestDetails() {
   for (var i = 0; i < guest.length; i++) {
-    if(guest[i].lastName == req.body.lastName && guest[i].firstName == req.body.firstName) {
-      lastName = guest[i].lastName;
-      firstName = guest[i].firstName;
+    if(guest[i].lastName == lastName && guest[i].firstName == firstName) {
       roomNumber = guest[i].reservation.roomNumber;
       timestamp = guest[i].reservation.startTimestamp;
       pubDate = new Date(timestamp * 1000);
       var hours = pubDate.getUTCHours();
       var localHours = hours - offset;
-    // the if/else statement sets the greeting to be appropriate for local time
+      // the if/else statement sets the greeting to be appropriate for local time
       if ( localHours < 12 )
       {
         timeOfDayGreeting = "Good morning";
@@ -70,11 +98,10 @@ router.post('/', function(req, res) {
       }
     } //end of if statement
   }//end of for loop
-  // after setting variables and local time greeting,
-  //calls generate message to create custom message
-  generateMessage();
-  res.sendStatus(201);
-}); //end of post route
+  // generateMessage();
+} //end of guestDetails function
+
+
 
 
 // Generate message takes in variables and accesses json obects to contruct custom message
@@ -98,6 +125,13 @@ function generateMessage() {
       }
     }
   }
+}
+
+
+function newMessage() {
+  var customTemplate = timeOfDayGreeting + " " + firstName + " " + lastName + "! " +
+   customMessage + ".";
+  console.log(customTemplate);
 }
 
 

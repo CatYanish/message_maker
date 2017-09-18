@@ -1,17 +1,6 @@
 myApp.controller('MessageController', ['$http', function($http) {
   var mc = this;
 
-  console.log('ang sourced');
-
-  // mc.getMessage = function() {
-  //   $http.get('/message').then(function(response) {
-  //     console.log(response.data);
-  //     mc.messages = response.data;
-  //   })
-  // }// end get listings
-  //
-  //
-  // mc.getMessage();
 
 //this object stores new info to be posted on messages
   mc.message = {
@@ -21,15 +10,29 @@ myApp.controller('MessageController', ['$http', function($http) {
     type: ""
   };
 
+
+mc.custom = {
+  firstName: "Candy",
+  lastName: "Pace",
+  company: "The Prancing Pony",
+  body: "Thank you for staying with us! We are here to help, so let any one of our staff know how we can make your trip great"
+}
+
+
   mc.sendMessage = function() {
-    console.log('send message', mc.message);
     $http.post('/guest', mc.message).then(function(response) {
       console.log('created message', response);
-      // mc.getMessage();
     });
   }// end post
 
+customMessage();
 
+  function customMessage() {
+    $http.post('/guest/custom', mc.custom).then(function(response) {
+      console.log('created message', response);
+
+    });
+  }// end post
 
 
 
