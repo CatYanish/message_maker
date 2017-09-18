@@ -127,7 +127,8 @@ function generateMessage() {
   }
 }
 
-
+//this function creates a custom template based on guest name, hotel name, and the user's
+//input for the custom message
 function newMessage() {
   var customTemplate = timeOfDayGreeting + " " + firstName + " " + lastName + "! " +
    customMessage + ".";
