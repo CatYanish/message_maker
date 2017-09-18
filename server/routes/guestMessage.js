@@ -112,16 +112,16 @@ function generateMessage() {
       if (template[i].type == "formal") {
         var message = timeOfDayGreeting + " " + firstName + " " + lastName  + "! Room " +
         roomNumber + " " + template[i].ready + ". " +  template[i].enjoy + city + ".";
-        console.log(message);
+        console.log('Message from Existing Formal Template: ', message);
       } // end of if
     } //end of for loop
   }
-  else if (messageType == "Standard") {
+  else if (messageType == "standard") {
     for (var i = 0; i < template.length; i++) {
-      if (template[i].type == "standard") {
+      if (template[i].type == "Standard") {
         var message = timeOfDayGreeting + " " + firstName + " " + lastName  + "! Room " +
         roomNumber + " " + template[i].ready + ". " +  template[i].enjoy;
-        console.log(message);
+        console.log('Message from Existing Standard Template: ', message);
       }
     }
   }
@@ -132,7 +132,7 @@ function generateMessage() {
 function newMessage() {
   var customTemplate = timeOfDayGreeting + " " + firstName + " " + lastName + "! " +
    customMessage + ".";
-  console.log(customTemplate);
+  console.log('Example of a Custom Message: ', customTemplate);
 }
 
 

@@ -1,16 +1,16 @@
 # An overview of design decisions
 
-I created a server side router to handle all HTTP requests for messages, guestMessage.js
+I created a server side router to handle all HTTP requests for messages, this router is in the guestMessage.js file.
 
-I used for loops to traverse each JSON file, and set variables to relevant data from the client-side request and from the JSON files.
+I used for loops to traverse each JSON file, and stored relevant data in  variables in the router.
 
-My approach was to first capture the hotel name data from the client post request, which set hotel variables for hotel name and city. Next I used the hotel's time zone to in and if/else statement to set an "adjust to local time" variable, in order to adjust greeting ("Good Morning" vs "Good evening") to be accurate in local time.
+In each post route, I capture guest name and hotel name from the client request. Next, I call a function to loop through the company data, and  used an if/else statement to set an "adjust to local time" variable, in order to adjust greeting ("Good Morning" vs "Good evening") to be accurate in local time.
 
-Next, I created a for loop to capture guest information and store guest data such as name in room number in variables that would later fill placeholders in a final custom message.
+Next, I called a for loop to capture guest information and store guest data such as room number in variables that would later fill placeholders in a final custom message.
 
-After completing the for loops and if/else functions to capture hotel and guest data from the client-side request and pull the relevant data from JSON file, a function is called to generate a custom message.
+After completing the for loops and if/else functions to capture hotel and guest data from the client-side request and pull the relevant data from JSON file, a function is called to generate a pre-existing or new custom message.
 
-The custom message is console logged to terminal.
+The personalized message is console logged to terminal.
 
 There is a very minimal UI, but it was not my main focus during the time I spent on this app.
 
